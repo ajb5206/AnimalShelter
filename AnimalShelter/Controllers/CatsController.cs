@@ -23,13 +23,26 @@ namespace AnimalShelter.Controllers
 			return await _db.Cats.ToListAsync();
 		}
 
+		[HttpGet("{id}")]
+		public async Task<ActionResult<Cat>> GetCat(int id)
+		{
+			var cat = await _db.Cats.FindAsync(id);
+
+			if (cat == null)
+			{
+				return NotFound();
+			}
+
+			return cat;
+		}
+
 		[HttpPost]
 		public async Task<ActionResult<Cat>> Post(Cat cat)
 		{
 			_db.Cats.Add(cat);
 			await _db.SaveChangesAsync();
 
-			return CreatedAtAction("Post", new { id = cat.CatId }, cat);
+			return CreatedAtAction(nameof(GetCat), new { id = cat.CatId }, cat);
 		}
 	}
 }
