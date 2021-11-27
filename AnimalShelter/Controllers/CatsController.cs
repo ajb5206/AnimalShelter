@@ -19,7 +19,7 @@ namespace AnimalShelter.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<Cat>>> Get(string catName, int catAge, string catGender, string catBreed)
+		public ActionResult<IEnumerable<Cat>> Get(string catName, int catAge, string catGender, string catBreed)
 		{
 			var query = _db.Cats.AsQueryable();
 
@@ -42,7 +42,7 @@ namespace AnimalShelter.Controllers
 			{
 				query = query.Where(c => c.CatBreed == catBreed);
 			}
-			return await _db.Cats.ToListAsync();
+			return query.ToList();
 		}
 
 		[HttpGet("{id}")]
