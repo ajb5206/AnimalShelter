@@ -6,6 +6,7 @@ namespace AnimalShelter.Models
 		public int DogId { get; set; }
 		[Required]
 		public string DogName { get; set; }
+		[Required]
 		[Range(0, 100, ErrorMessage = "Age must be between 0 and 200.")]
 		public int DogAge { get; set; }
 		[Required]
