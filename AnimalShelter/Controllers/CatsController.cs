@@ -19,7 +19,7 @@ namespace AnimalShelter.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult<IEnumerable<Cat>> Get(string catName, int catAge, string catGender, string catBreed)
+		public async Task <ActionResult<PaginationModel>> Get(string catName, int catAge, string catGender, string catBreed, int page, int perPage)
 		{
 			var query = _db.Cats.AsQueryable();
 
@@ -42,7 +42,32 @@ namespace AnimalShelter.Controllers
 			{
 				query = query.Where(c => c.CatBreed == catBreed);
 			}
-			return query.ToList();
+
+			List<Cat> cats = await query.ToListAsync();
+
+			if (perPage == 0) perPage = 3;
+
+			int total = cats.Count;
+			List<Cat> catPage = new List<Cat>();
+
+			if(page < (total / perPage))
+			{
+				catPage = cats.GetRange(page * perPage, perPage);
+			}
+
+			if (page == (total / perPage))
+			{
+				catPage = cats.GetRange(page * perPage, total - ( page * perPage));
+			}
+			return new PaginationModel()
+			{
+				CatData = catPage,
+				Total = total,
+				PerPage = perPage,
+				Page = page,
+				PreviousPage = page == 0 ? "No previous page" : $"/api/cats?page={page - 1}%perPage={perPage}",
+				NextPage = page == total/perPage ? "No next page" : $"api/cats?page={page + 1}&perPage={perPage}"
+			};
 		}
 
 		[HttpGet("{id}")]
