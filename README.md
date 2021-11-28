@@ -29,6 +29,7 @@
 ## Description <a id="description"></a>
 
 Welcome to the Animal Shelter API. Add dogs and cats to the API, or check out the pre-seeded animals. 
+Pagination is implemented by adding two PaginationModel files, one for cats and one for dogs. Each model includes properties about the total number of cats or dogs, amount of cats or dogs per page, pages, and more. Within the animal-specific controllers, pagination is implemented by adding more paramenters to the GET request. Within the GET request, the pagination properties are defined. By using some basic math, along with GetRange, results are paginated. 
 
 ## Setup/Installation Requirements <a id="setup/install"></a>
 
@@ -58,7 +59,7 @@ Welcome to the Animal Shelter API. Add dogs and cats to the API, or check out th
 
 
 ## Known Bugs <a id="knownbugs"></a>
-* PreviousPage and NextPage could be cleaner
+* Pagination overall could be implemented in a more simple manner
 
 ## License
 Copyright <2021> <MIT>
