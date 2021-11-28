@@ -33,7 +33,7 @@ Pagination is implemented by adding two PaginationModel files, one for cats and 
 
 ## Setup/Installation Requirements <a id="setup/install"></a>
 
-1. Clone the project to your current directory using the following command: git clone https://github.com/ajb5206/AnimalShelter
+1. Clone the project to your current directory using the following command: git clone https://github.com/ajb5206/AnimalShelter.Solution
 2. Navigate to the project folder in the command line
 3. Run the command _`dotnet restore`_ to install the packages listed in the _`.csproj`_ file 
 	 as well as creating the _`obj`_ file
