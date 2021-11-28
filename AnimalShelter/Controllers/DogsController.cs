@@ -19,7 +19,7 @@ namespace AnimalShelter.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult<IEnumerable<Dog>> Get(string dogName, int dogAge, string dogGender, string dogBreed)
+		public async Task <ActionResult<PaginationModelDog>> Get(string dogName, int dogAge, string dogGender, string dogBreed, int page, int perPage)
 		{
 			var query = _db.Dogs.AsQueryable();
 
@@ -42,7 +42,30 @@ namespace AnimalShelter.Controllers
 			{
 				query = query.Where(d => d.DogBreed == dogBreed);
 			}
-			return query.ToList();
+
+			List<Dog> dogs = await query.ToListAsync();
+			if(perPage ==0) perPage = 3;
+
+			int total = dogs.Count;
+			List<Dog> dogPage = new List<Dog>();
+			if(page < (total / perPage))
+			{
+				dogPage = dogs.GetRange(page * perPage, perPage);
+			}
+			if(page == (total/perPage))
+			{
+				dogPage = dogs.GetRange(page * perPage, total - (page * perPage));
+			}
+
+			return new PaginationModelDog()
+			{
+				DogData = dogPage,
+				Total = total,
+				PerPage = perPage,
+				Page = page,
+				PreviousPage = page == 0 ? "No previous page" : $"/api/dogs?page={page-1}&perPage={perPage}",
+				NextPage = page == total/perPage ? "No next page" : $"/api/dogs?page={page+1}&perPage={perPage}"
+			};
 		}
 
 		[HttpGet("{id}")]
